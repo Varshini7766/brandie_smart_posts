@@ -35,22 +35,4 @@ abstract final class AppUtils {
     }
     return caption.substring(0, AppConstants.captionMaxLength);
   }
-
-  /// Keeps the mandatory referral lines as part of caption content and the
-  /// 2200-character budget. Body text is trimmed first if needed.
-  static String ensureReferralSuffix(String caption) {
-    final suffix = AppStrings.referralSuffix;
-    var body = caption;
-    final referralIndex = body.lastIndexOf(AppStrings.referralCode);
-    if (referralIndex != -1) {
-      body = body.substring(0, referralIndex).trimRight();
-    }
-
-    final maxBodyLength = AppConstants.captionMaxLength - suffix.length;
-    if (body.length > maxBodyLength) {
-      body = body.substring(0, maxBodyLength).trimRight();
-    }
-
-    return '$body$suffix';
-  }
 }
