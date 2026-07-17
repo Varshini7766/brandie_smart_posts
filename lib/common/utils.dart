@@ -29,6 +29,13 @@ abstract final class AppUtils {
         '${AppConstants.captionMaxLength}';
   }
 
+  static String clampCaption(String caption) {
+    if (caption.length <= AppConstants.captionMaxLength) {
+      return caption;
+    }
+    return caption.substring(0, AppConstants.captionMaxLength);
+  }
+
   static String captionPreview(String caption) {
     if (caption.length <= AppConstants.captionPreviewLength) {
       return caption;

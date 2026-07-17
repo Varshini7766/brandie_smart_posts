@@ -4,6 +4,10 @@ import 'package:brandie_smart_posts_feature/smartposts/bloc/smart_posts_state.da
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
+  setUp(() {
+    SmartPostsBloc.introCompletedThisSession = false;
+  });
+
   group('SmartPostsBloc', () {
     test('can skip animation and expose the ready feed', () async {
       final bloc = SmartPostsBloc();
@@ -48,6 +52,23 @@ void main() {
 
       expect(bloc.state.selectedSharePlatform, 'Instagram');
       expect(bloc.state.shareLoadingStep, 3);
+    });
+
+    test('clamps caption drafts to the Instagram character limit', () async {
+      final oversizedCaption = 'a' * 2210;
+      final bloc = SmartPostsBloc();
+      addTearDown(bloc.close);
+
+      bloc
+        ..add(const CaptionEditorOpened(0))
+        ..add(CaptionDraftChanged(oversizedCaption));
+
+      await bloc.stream.firstWhere(
+        (state) => state.draftCaption.length == 2200,
+      );
+
+      expect(bloc.state.draftCaption.length, 2200);
+      expect(bloc.state.captionDirty, isTrue);
     });
   });
 }

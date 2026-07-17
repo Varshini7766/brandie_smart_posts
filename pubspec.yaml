@@ -36,7 +36,6 @@ dependencies:
   cupertino_icons: ^1.0.8
   flutter_bloc: ^9.1.1
   equatable: ^2.1.0
-  video_player: ^2.10.1
 
 dev_dependencies:
   flutter_test:
@@ -61,11 +60,8 @@ flutter:
   uses-material-design: true
   assets:
     - assets/images/
-    - assets/content_0_intro.mp4
-  fonts:
-    - family: OriflameSans
-      fonts:
-        - asset: assets/oriflame_sans.ttf
+    - assets/icons/
+    - assets/smart_post_loading_animation.gif
 
   # To add assets to your application, add an assets section, like this:
   # assets:

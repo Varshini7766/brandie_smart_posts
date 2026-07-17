@@ -20,8 +20,27 @@ void main() {
   runApp(const BrandieApp());
 }
 
-class BrandieApp extends StatelessWidget {
+class BrandieApp extends StatefulWidget {
   const BrandieApp({super.key});
+
+  @override
+  State<BrandieApp> createState() => _BrandieAppState();
+}
+
+class _BrandieAppState extends State<BrandieApp> {
+  late final SmartPostsBloc _smartPostsBloc;
+
+  @override
+  void initState() {
+    super.initState();
+    _smartPostsBloc = SmartPostsBloc()..add(const SmartPostsStarted());
+  }
+
+  @override
+  void dispose() {
+    _smartPostsBloc.close();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,8 +48,8 @@ class BrandieApp extends StatelessWidget {
       title: AppStrings.appName,
       debugShowCheckedModeBanner: false,
       theme: AppTheme.light,
-      home: BlocProvider<SmartPostsBloc>(
-        create: (_) => SmartPostsBloc()..add(const SmartPostsStarted()),
+      home: BlocProvider<SmartPostsBloc>.value(
+        value: _smartPostsBloc,
         child: const SmartPostsScreen(),
       ),
     );

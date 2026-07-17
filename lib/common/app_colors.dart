@@ -9,6 +9,7 @@ abstract final class AppColors {
   static const brandGreen = Color(0xFF73BF98);
   static const cameraGreen = Color(0xFFA1DCBC);
   static const tabText = Color(0xFF595959);
+  static const editorText = Color(0xFF2D2D2D);
   static const discountGreen = Color(0xFF00725B);
   static const readyPink = Color(0xFFE785C4);
   static const glass = Color(0x63313131);
@@ -26,6 +27,23 @@ abstract final class AppColors {
   static const shareLoadingTrack = Color(0xFFE8F1ED);
   static const shareLoadingProgress = Color(0xFF8ED8B8);
   static const metaRed = Color(0xFFFF3158);
+
+  static const instagramStoryRing = SweepGradient(
+    colors: <Color>[
+      Color(0xFFFEDA75),
+      Color(0xFFFA7E1E),
+      Color(0xFFD62976),
+      Color(0xFF962FBF),
+      Color(0xFF4F5BD5),
+      Color(0xFFFEDA75),
+    ],
+  );
+
+  static const facebookStoryRing = LinearGradient(
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+    colors: <Color>[Color(0xFF73A7FF), Color(0xFF1769FF)],
+  );
 
   static const postScrim = LinearGradient(
     begin: Alignment.topCenter,

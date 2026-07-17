@@ -125,6 +125,7 @@ class _PostIdentity extends StatelessWidget {
                       fontSize: AppConstants.twelve,
                       fontWeight: FontWeight.w700,
                       height: AppConstants.one,
+                      leadingDistribution: TextLeadingDistribution.even,
                     ),
                   ),
                 ],
@@ -161,7 +162,7 @@ class _PostCounter extends StatelessWidget {
       ),
       child: Text(
         '$current ${AppStrings.of} $count',
-        style: AppTextStyles.label.copyWith(color: AppColors.white),
+        style: AppTextStyles.captionMetaBold.copyWith(color: AppColors.white),
       ),
     );
   }
@@ -226,8 +227,6 @@ class _PostDetails extends StatelessWidget {
           ),
         if (post.product != null)
           const SizedBox(height: AppConstants.contentCardGap),
-        const _ShareModeSelector(),
-        const SizedBox(height: AppConstants.eight),
         _CaptionCard(post: post, onEdit: onEditCaption),
       ],
     );
@@ -242,7 +241,9 @@ class _ProductCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return IntrinsicWidth(
+    return SizedBox(
+      width: AppConstants.productCardWidth,
+      height: AppConstants.productCardHeight,
       child: GlassPanel(
         color: AppColors.productGlass,
         padding: const EdgeInsets.all(AppConstants.six),
@@ -260,10 +261,7 @@ class _ProductCard extends StatelessWidget {
               ),
             ),
             const SizedBox(width: AppConstants.four),
-            ConstrainedBox(
-              constraints: const BoxConstraints(
-                maxWidth: AppConstants.productTextMaxWidth,
-              ),
+            Expanded(
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -285,21 +283,25 @@ class _ProductCard extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(width: AppConstants.four),
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: AppConstants.four,
-                          vertical: AppConstants.one,
-                        ),
-                        decoration: BoxDecoration(
-                          color: AppColors.discountGreen,
-                          borderRadius: BorderRadius.circular(
-                            AppConstants.four,
+                      Flexible(
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: AppConstants.four,
+                            vertical: AppConstants.one,
                           ),
-                        ),
-                        child: Text(
-                          product.discount,
-                          style: AppTextStyles.label.copyWith(
-                            color: AppColors.white,
+                          decoration: BoxDecoration(
+                            color: AppColors.discountGreen,
+                            borderRadius: BorderRadius.circular(
+                              AppConstants.four,
+                            ),
+                          ),
+                          child: Text(
+                            product.discount,
+                            maxLines: AppConstants.singleLine,
+                            overflow: TextOverflow.ellipsis,
+                            style: AppTextStyles.label.copyWith(
+                              color: AppColors.white,
+                            ),
                           ),
                         ),
                       ),
@@ -315,81 +317,6 @@ class _ProductCard extends StatelessWidget {
   }
 }
 
-class _ShareModeSelector extends StatelessWidget {
-  const _ShareModeSelector();
-
-  @override
-  Widget build(BuildContext context) {
-    return const Row(
-      children: <Widget>[
-        Expanded(
-          child: _ShareModePill(
-            label: AppStrings.forPost,
-            icon: Icons.edit_outlined,
-            active: true,
-          ),
-        ),
-        SizedBox(width: AppConstants.shareModeGap),
-        Expanded(
-          child: _ShareModePill(
-            label: AppStrings.forStory,
-            icon: Icons.refresh,
-          ),
-        ),
-        SizedBox(width: AppConstants.shareModeGap),
-        Expanded(
-          child: _ShareModePill(
-            label: AppStrings.forMessage,
-            icon: Icons.chat_bubble_outline,
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-class _ShareModePill extends StatelessWidget {
-  const _ShareModePill({
-    required this.label,
-    required this.icon,
-    this.active = false,
-  });
-
-  final String label;
-  final IconData icon;
-  final bool active;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: AppConstants.shareModeHeight,
-      decoration: BoxDecoration(
-        color: active ? AppColors.shareModeActive : AppColors.shareModeInactive,
-        borderRadius: BorderRadius.circular(AppConstants.shareModeRadius),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Icon(
-            icon,
-            color: AppColors.white,
-            size: AppConstants.shareModeIconSize,
-          ),
-          const SizedBox(width: AppConstants.four),
-          Flexible(
-            child: Text(
-              label,
-              maxLines: AppConstants.singleLine,
-              overflow: TextOverflow.ellipsis,
-              style: AppTextStyles.body.copyWith(color: AppColors.white),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
 class _CaptionCard extends StatelessWidget {
   const _CaptionCard({required this.post, required this.onEdit});
 
@@ -398,55 +325,28 @@ class _CaptionCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GlassPanel(
-      color: AppColors.captionOverlay,
-      padding: const EdgeInsets.all(AppConstants.zero),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Text.rich(
-            TextSpan(
-              children: <InlineSpan>[
-                TextSpan(text: AppUtils.captionPreview(post.caption)),
-                const TextSpan(text: AppStrings.ellipsis),
-                const TextSpan(
-                  text: AppStrings.seeMore,
-                  style: TextStyle(
-                    decoration: TextDecoration.underline,
-                    decorationColor: AppColors.white,
-                  ),
-                ),
-              ],
-            ),
-            maxLines: AppConstants.captionPreviewLines,
-            overflow: TextOverflow.ellipsis,
-            style: AppTextStyles.body.copyWith(
-              color: AppColors.white,
-              fontWeight: FontWeight.w400,
-            ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        GlassPanel(
+          color: AppColors.captionOverlay,
+          padding: const EdgeInsets.symmetric(
+            horizontal: AppConstants.twelve,
+            vertical: AppConstants.eight,
           ),
-          const SizedBox(height: AppConstants.eight),
-          Row(
+          child: Row(
             children: <Widget>[
-              ClipOval(
-                child: Image.asset(
-                  post.profileAsset,
-                  width: AppConstants.suggestionProfileSize,
-                  height: AppConstants.suggestionProfileSize,
-                  fit: BoxFit.cover,
-                ),
-              ),
-              const SizedBox(width: AppConstants.four),
               const Icon(
                 Icons.music_note,
                 color: AppColors.white,
                 size: AppConstants.sixteen,
               ),
-              Flexible(
+              const SizedBox(width: AppConstants.eight),
+              Expanded(
                 child: Text.rich(
                   TextSpan(
                     children: <InlineSpan>[
-                      const TextSpan(text: AppStrings.suggested),
+                      const TextSpan(text: AppStrings.recommended),
                       TextSpan(
                         text: post.songTitle,
                         style: const TextStyle(
@@ -462,31 +362,46 @@ class _CaptionCard extends StatelessWidget {
                   style: AppTextStyles.body.copyWith(color: AppColors.white),
                 ),
               ),
-              const SizedBox(width: AppConstants.four),
-              InkWell(
-                onTap: onEdit,
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    const Icon(
-                      Icons.edit_outlined,
-                      color: AppColors.white,
-                      size: AppConstants.sixteen,
-                    ),
-                    const SizedBox(width: AppConstants.four),
-                    Text(
-                      AppStrings.editCaption,
-                      style: AppTextStyles.body.copyWith(
-                        color: AppColors.white,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
             ],
           ),
-        ],
-      ),
+        ),
+        const SizedBox(height: AppConstants.four),
+        GlassPanel(
+          color: AppColors.captionOverlay,
+          padding: const EdgeInsets.all(AppConstants.twelve),
+          child: Text.rich(
+            TextSpan(
+              children: <InlineSpan>[
+                TextSpan(text: AppUtils.captionPreview(post.caption)),
+                const TextSpan(text: AppStrings.ellipsis),
+                WidgetSpan(
+                  alignment: PlaceholderAlignment.baseline,
+                  baseline: TextBaseline.alphabetic,
+                  child: GestureDetector(
+                    onTap: onEdit,
+                    child: Text(
+                      AppStrings.seeMore,
+                      style: AppTextStyles.body.copyWith(
+                        color: AppColors.white,
+                        fontWeight: FontWeight.w400,
+                        decoration: TextDecoration.underline,
+                        decorationColor: AppColors.white,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            strutStyle: AppTextStruts.caption,
+            maxLines: AppConstants.captionPreviewLines,
+            overflow: TextOverflow.ellipsis,
+            style: AppTextStyles.body.copyWith(
+              color: AppColors.white,
+              fontWeight: FontWeight.w400,
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
@@ -504,7 +419,7 @@ class _QuickShareRow extends StatelessWidget {
         children: <Widget>[
           Text(
             AppStrings.quickShareTo,
-            style: AppTextStyles.bodyBold.copyWith(color: AppColors.white),
+            style: AppTextStyles.label.copyWith(color: AppColors.white),
           ),
           const SizedBox(width: AppConstants.eight),
           Expanded(
@@ -521,25 +436,63 @@ class _QuickShareRow extends StatelessWidget {
                   child: InkWell(
                     onTap: () => onShare(platform.name),
                     customBorder: const CircleBorder(),
-                    child: Container(
-                      width: AppConstants.socialIconSize,
-                      height: AppConstants.socialIconSize,
-                      padding: EdgeInsets.all(platform.innerPadding),
-                      decoration: const BoxDecoration(
-                        color: AppColors.socialIconFaded,
-                        shape: BoxShape.circle,
-                        border: Border.fromBorderSide(
-                          BorderSide(color: AppColors.socialIconBorder),
-                        ),
-                      ),
-                      child: Image.asset(platform.assetPath),
-                    ),
+                    child: _QuickShareIcon(platform: platform),
                   ),
                 );
               },
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class _QuickShareIcon extends StatelessWidget {
+  const _QuickShareIcon({required this.platform});
+
+  final SharePlatform platform;
+
+  Gradient? get _storyGradient => switch (platform.storyRing) {
+    ShareStoryRing.instagram => AppColors.instagramStoryRing,
+    ShareStoryRing.facebook => AppColors.facebookStoryRing,
+    ShareStoryRing.none => null,
+  };
+
+  @override
+  Widget build(BuildContext context) {
+    final storyGradient = _storyGradient;
+
+    return Container(
+      width: AppConstants.socialIconSize,
+      height: AppConstants.socialIconSize,
+      padding: EdgeInsets.all(
+        storyGradient == null ? AppConstants.zero : AppConstants.storyRingWidth,
+      ),
+      decoration: BoxDecoration(
+        gradient: storyGradient,
+        shape: BoxShape.circle,
+        border: storyGradient == null
+            ? const Border.fromBorderSide(
+                BorderSide(color: AppColors.socialIconBorder),
+              )
+            : null,
+      ),
+      child: DecoratedBox(
+        decoration: const BoxDecoration(
+          color: AppColors.socialIconFaded,
+          shape: BoxShape.circle,
+        ),
+        child: Center(
+          child: SizedBox.square(
+            dimension: AppConstants.socialIconInnerSize,
+            child: Image.asset(
+              platform.assetPath,
+              fit: BoxFit.contain,
+              filterQuality: FilterQuality.high,
+            ),
+          ),
+        ),
       ),
     );
   }

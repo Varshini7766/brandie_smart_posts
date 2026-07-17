@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../common/app_colors.dart';
@@ -83,6 +84,18 @@ class _CaptionEditorSheetState extends State<CaptionEditorSheet> {
     Navigator.of(context).pop();
   }
 
+  // Keep the controller and Bloc draft on the same hard 2200-char boundary.
+  void _onCaptionChanged(String value) {
+    final clamped = AppUtils.clampCaption(value);
+    if (clamped != _controller.text) {
+      _controller.value = TextEditingValue(
+        text: clamped,
+        selection: TextSelection.collapsed(offset: clamped.length),
+      );
+    }
+    context.read<SmartPostsBloc>().add(CaptionDraftChanged(clamped));
+  }
+
   @override
   Widget build(BuildContext context) {
     final maxSheetHeight =
@@ -134,10 +147,13 @@ class _CaptionEditorSheetState extends State<CaptionEditorSheet> {
                         onPressed: state.captionDirty ? _save : null,
                         style: FilledButton.styleFrom(
                           padding: EdgeInsets.zero,
-                          backgroundColor: AppColors.black,
+                          backgroundColor: AppColors.brandGreen,
                           disabledBackgroundColor: AppColors.loadingTrack,
                         ),
-                        child: const Text(AppStrings.save),
+                        child: const Text(
+                          AppStrings.save,
+                          style: AppTextStyles.editorAction,
+                        ),
                       ),
                     ),
                     const SizedBox(width: AppConstants.horizontalPadding),
@@ -156,22 +172,17 @@ class _CaptionEditorSheetState extends State<CaptionEditorSheet> {
                     maxLines: null,
                     expands: true,
                     textAlignVertical: TextAlignVertical.top,
-                    maxLength: AppConstants.captionMaxLength,
-                    buildCounter:
-                        (
-                          context, {
-                          required currentLength,
-                          required isFocused,
-                          required maxLength,
-                        }) => const SizedBox.shrink(),
-                    style: AppTextStyles.tab,
+                    inputFormatters: const <TextInputFormatter>[
+                      _CaptionLengthLimitingFormatter(),
+                    ],
+                    style: AppTextStyles.editorBody,
+                    strutStyle: AppTextStruts.editorBody,
                     decoration: const InputDecoration(
                       border: InputBorder.none,
                       isCollapsed: true,
                     ),
-                    onChanged: (value) => context.read<SmartPostsBloc>().add(
-                      CaptionDraftChanged(value),
-                    ),
+                    
+                    onChanged: _onCaptionChanged,
                   ),
                 ),
               ),
@@ -198,6 +209,27 @@ class _CaptionEditorSheetState extends State<CaptionEditorSheet> {
           ),
         );
       },
+    );
+  }
+}
+
+/// Caps by Dart string length so the field, counter, and Bloc stay aligned.
+final class _CaptionLengthLimitingFormatter extends TextInputFormatter {
+  const _CaptionLengthLimitingFormatter();
+
+  @override
+  TextEditingValue formatEditUpdate(
+    TextEditingValue oldValue,
+    TextEditingValue newValue,
+  ) {
+    if (newValue.text.length <= AppConstants.captionMaxLength) {
+      return newValue;
+    }
+
+    final clamped = AppUtils.clampCaption(newValue.text);
+    return TextEditingValue(
+      text: clamped,
+      selection: TextSelection.collapsed(offset: clamped.length),
     );
   }
 }

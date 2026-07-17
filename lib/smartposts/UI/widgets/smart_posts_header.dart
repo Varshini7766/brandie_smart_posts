@@ -16,35 +16,10 @@ class SmartPostsHeader extends StatelessWidget {
           SizedBox(
             width: AppConstants.headerLogoWidth,
             height: AppConstants.headerLogoHeight,
-            child: FittedBox(
-              fit: BoxFit.fill,
-              child: SizedBox(
-                width: AppConstants.headerLogoCropWidth,
-                height: AppConstants.headerLogoCropHeight,
-                child: ClipRect(
-                  child: Stack(
-                    clipBehavior: Clip.hardEdge,
-                    children: <Widget>[
-                      Positioned(
-                        left: AppConstants.headerLogoCropLeft,
-                        top: AppConstants.headerLogoCropTop,
-                        width: AppConstants.headerLogoAssetSize,
-                        height: AppConstants.headerLogoAssetSize,
-                        child: ColorFiltered(
-                          colorFilter: const ColorFilter.mode(
-                            AppColors.black,
-                            BlendMode.srcIn,
-                          ),
-                          child: Image.asset(
-                            AppAssets.oriflameLogo,
-                            fit: BoxFit.fill,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+            child: Image.asset(
+              AppAssets.headerLogo,
+              fit: BoxFit.contain,
+              filterQuality: FilterQuality.high,
             ),
           ),
           Align(
@@ -59,7 +34,7 @@ class SmartPostsHeader extends StatelessWidget {
               child: const Icon(
                 Icons.camera_alt,
                 color: AppColors.white,
-                size: AppConstants.twentyFour,
+                size: AppConstants.cameraIconSize,
               ),
             ),
           ),

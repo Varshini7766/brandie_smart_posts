@@ -43,3 +43,6 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+#add pubspec.lock to the ignore list
+pubspec.lock

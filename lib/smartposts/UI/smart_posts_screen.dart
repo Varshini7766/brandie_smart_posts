@@ -14,7 +14,7 @@ import 'widgets/share_loading_overlay.dart';
 import 'widgets/smart_post_page.dart';
 import 'widgets/smart_posts_bottom_navigation.dart';
 import 'widgets/smart_posts_header.dart';
-import 'widgets/smart_posts_intro_video.dart';
+import 'widgets/smart_posts_intro_loader.dart';
 import 'widgets/smart_posts_tabs.dart';
 
 class SmartPostsScreen extends StatefulWidget {
@@ -125,7 +125,11 @@ class _SmartPostsScreenState extends State<SmartPostsScreen> {
                     child: BlocBuilder<SmartPostsBloc, SmartPostsState>(
                       builder: (context, state) {
                         if (state.status != SmartPostsStatus.ready) {
-                          return const SizedBox.expand();
+                          return SmartPostsIntroLoader(
+                            onReducedMotion: () => context
+                                .read<SmartPostsBloc>()
+                                .add(const SmartPostsIntroCompleted()),
+                          );
                         }
 
                         return Stack(
@@ -200,21 +204,6 @@ class _SmartPostsScreenState extends State<SmartPostsScreen> {
                   return const SizedBox.shrink();
                 }
                 return ShareLoadingOverlay(step: shareState.$2);
-              },
-            ),
-            BlocSelector<SmartPostsBloc, SmartPostsState, SmartPostsStatus>(
-              selector: (state) => state.status,
-              builder: (context, status) {
-                if (status == SmartPostsStatus.ready) {
-                  return const SizedBox.shrink();
-                }
-                return Positioned.fill(
-                  child: SmartPostsIntroVideo(
-                    onCompleted: () => context.read<SmartPostsBloc>().add(
-                      const SmartPostsIntroCompleted(),
-                    ),
-                  ),
-                );
               },
             ),
           ],

@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../common/app_constants.dart';
+import '../../common/utils.dart';
 import 'smart_posts_event.dart';
 import 'smart_posts_state.dart';
 
@@ -22,18 +23,20 @@ final class SmartPostsBloc extends Bloc<SmartPostsEvent, SmartPostsState> {
     on<SmartPostsNavigationSelected>(_onNavigationSelected);
   }
 
+  /// Survives hot reload so the intro GIF is not replayed until a hot restart.
+  static bool introCompletedThisSession = false;
+
+  Timer? _introTimer;
   Timer? _productRevealTimer;
 
   void _onStarted(SmartPostsStarted event, Emitter<SmartPostsState> emit) {
-    emit(
-      state.copyWith(
-        status: SmartPostsStatus.loading,
-        completedLoadingSteps: 0,
-        productVisible: false,
-      ),
-    );
+    _introTimer?.cancel();
 
-    if (!event.animate) {
+    // Skip the intro after it has already played in this Dart isolate. Hot
+    // reload can recreate the Bloc, but static state is preserved; hot restart
+    // clears it and shows the loader again.
+    if (!event.animate || introCompletedThisSession) {
+      introCompletedThisSession = true;
       emit(
         state.copyWith(
           status: SmartPostsStatus.ready,
@@ -43,6 +46,21 @@ final class SmartPostsBloc extends Bloc<SmartPostsEvent, SmartPostsState> {
       );
       return;
     }
+
+    emit(
+      state.copyWith(
+        status: SmartPostsStatus.loading,
+        completedLoadingSteps: 0,
+        productVisible: false,
+      ),
+    );
+
+    // The supplied loader GIF loops forever, so Bloc ends it after one exact
+    // 289-frame cycle and reveals the interactive feed.
+    _introTimer = Timer(
+      AppConstants.introLoaderDuration,
+      () => add(const SmartPostsIntroCompleted()),
+    );
   }
 
   void _onIntroCompleted(
@@ -50,6 +68,8 @@ final class SmartPostsBloc extends Bloc<SmartPostsEvent, SmartPostsState> {
     Emitter<SmartPostsState> emit,
   ) {
     if (state.status == SmartPostsStatus.ready) return;
+    _introTimer?.cancel();
+    introCompletedThisSession = true;
     emit(
       state.copyWith(
         status: SmartPostsStatus.ready,
@@ -100,9 +120,7 @@ final class SmartPostsBloc extends Bloc<SmartPostsEvent, SmartPostsState> {
     if (editingIndex == null) return;
 
     // Clamp to Instagram's caption limit so the draft and counter stay aligned.
-    final caption = event.caption.length > AppConstants.captionMaxLength
-        ? event.caption.substring(0, AppConstants.captionMaxLength)
-        : event.caption;
+    final caption = AppUtils.clampCaption(event.caption);
 
     emit(
       state.copyWith(
@@ -195,6 +213,7 @@ final class SmartPostsBloc extends Bloc<SmartPostsEvent, SmartPostsState> {
 
   @override
   Future<void> close() {
+    _introTimer?.cancel();
     _productRevealTimer?.cancel();
     return super.close();
   }

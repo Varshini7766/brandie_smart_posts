@@ -7,10 +7,15 @@
 
 import 'package:brandie_smart_posts_feature/common/app_strings.dart';
 import 'package:brandie_smart_posts_feature/main.dart';
+import 'package:brandie_smart_posts_feature/smartposts/bloc/smart_posts_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
+  setUp(() {
+    SmartPostsBloc.introCompletedThisSession = false;
+  });
+
   testWidgets('shows the Figma intro before the Smart Posts feed', (
     tester,
   ) async {

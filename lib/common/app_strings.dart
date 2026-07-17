@@ -12,8 +12,7 @@ abstract final class AppStrings {
   static const quickShareTo = 'Quick share to:';
   static const pickCount = '1 of 3';
   static const of = 'of';
-  static const recommended = 'RECOMMENDED:';
-  static const suggested = 'Suggested: ';
+  static const recommended = 'Recommended: ';
   static const forPost = 'For Post';
   static const forStory = 'For story';
   static const forMessage = 'For message';

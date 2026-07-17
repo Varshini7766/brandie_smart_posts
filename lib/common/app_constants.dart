@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'app_colors.dart';
+
 abstract final class AppConstants {
   static const referenceWidth = 375.0;
   static const referenceHeight = 812.0;
@@ -16,13 +18,15 @@ abstract final class AppConstants {
   static const statusBadgeHeight = 20.0;
   static const statusBadgeRadius = 15.0;
   static const socialIconSize = 32.0;
-  static const socialIconGap = 16.0;
+  static const socialIconInnerSize = 21.0;
+  static const socialIconGap = 12.0;
+  static const storyRingWidth = 1.7;
   static const pageIndicatorSize = 10.0;
   static const pageIndicatorGap = 8.0;
   static const glassRadius = 8.0;
   static const productImageSize = 40.0;
+  static const productCardWidth = 250.0;
   static const productCardHeight = 52.0;
-  static const productTextMaxWidth = 180.0;
   static const shareModeHeight = 30.0;
   static const shareModeGap = 4.0;
   static const shareModeRadius = 18.0;
@@ -39,13 +43,9 @@ abstract final class AppConstants {
   static const indicatorRight = 16.0;
   static const indicatorTop = 265.0;
   static const headerIconSize = 40.0;
+  static const cameraIconSize = 32.0;
   static const headerLogoWidth = 117.0;
   static const headerLogoHeight = 32.0;
-  static const headerLogoAssetSize = 300.0;
-  static const headerLogoCropWidth = 292.0;
-  static const headerLogoCropHeight = 108.0;
-  static const headerLogoCropLeft = -4.0;
-  static const headerLogoCropTop = -96.0;
   static const navIconSize = 29.0;
   static const activeNavIconSize = 32.0;
   static const homeIndicatorWidth = 117.0;
@@ -68,6 +68,7 @@ abstract final class AppConstants {
   static const editorCaptionMinHeight = 160.0;
   static const editorSheetRadius = 16.0;
   static const editorSheetMaxHeightFactor = 0.72;
+  static const editorBodyLineHeight = 20 / 14;
   static const saveButtonWidth = 56.0;
   static const saveButtonHeight = 28.0;
   // Instagram caption character limit used for the editor counter.
@@ -102,6 +103,7 @@ abstract final class AppConstants {
   static const loadingStepDuration = Duration(milliseconds: 700);
   static const loadingCompletePause = Duration(milliseconds: 800);
   static const shareLoadingStepDuration = Duration(milliseconds: 650);
+  static const introLoaderDuration = Duration(milliseconds: 19270);
   static const productRevealDelay = Duration(seconds: 3);
   static const pageAnimationDuration = Duration(milliseconds: 280);
   static const feedbackDuration = Duration(seconds: 2);
@@ -123,49 +125,104 @@ abstract final class AppConstants {
 abstract final class AppTextStyles {
   static const headerLabel = TextStyle(
     fontSize: 10,
-    height: 1.5,
+    height: 1,
+    leadingDistribution: TextLeadingDistribution.even,
     fontWeight: FontWeight.w400,
   );
   static const tab = TextStyle(
     fontSize: 14,
-    height: 1.5,
+    height: 1,
+    leadingDistribution: TextLeadingDistribution.even,
     fontWeight: FontWeight.w700,
   );
   static const body = TextStyle(
     fontSize: 12,
-    height: 1.35,
+    height: 1,
+    leadingDistribution: TextLeadingDistribution.even,
     fontWeight: FontWeight.w400,
   );
   static const bodyBold = TextStyle(
     fontSize: 12,
-    height: 1.35,
+    height: 1,
+    leadingDistribution: TextLeadingDistribution.even,
     fontWeight: FontWeight.w700,
   );
   static const label = TextStyle(
     fontSize: 10,
-    height: 1.5,
+    height: 1.2,
+    leadingDistribution: TextLeadingDistribution.even,
+    fontWeight: FontWeight.w700,
+  );
+  static const captionMeta = TextStyle(
+    fontSize: 10,
+    height: 1,
+    leadingDistribution: TextLeadingDistribution.even,
+    fontWeight: FontWeight.w400,
+  );
+  static const captionMetaBold = TextStyle(
+    fontSize: 10,
+    height: 1,
+    leadingDistribution: TextLeadingDistribution.even,
     fontWeight: FontWeight.w700,
   );
   static const productTitle = TextStyle(
     fontSize: 14,
-    height: 1.5,
+    height: 1,
+    leadingDistribution: TextLeadingDistribution.even,
     fontWeight: FontWeight.w700,
   );
   static const editorTitle = TextStyle(
+    color: AppColors.editorText,
     fontSize: 20,
-    height: 1.5,
+    height: 1,
+    leadingDistribution: TextLeadingDistribution.even,
+    fontWeight: FontWeight.w700,
+  );
+  static const editorBody = TextStyle(
+    color: AppColors.editorText,
+    fontSize: 14,
+    height: AppConstants.editorBodyLineHeight,
+    leadingDistribution: TextLeadingDistribution.even,
+    fontWeight: FontWeight.w400,
+  );
+  static const editorAction = TextStyle(
+    color: AppColors.white,
+    fontSize: 14,
+    height: 1,
+    leadingDistribution: TextLeadingDistribution.even,
     fontWeight: FontWeight.w700,
   );
   static const loadingTitle = TextStyle(
     fontSize: 20,
-    height: 1.5,
+    height: 1,
+    leadingDistribution: TextLeadingDistribution.even,
     fontWeight: FontWeight.w700,
   );
 }
 
+abstract final class AppTextStruts {
+  static const caption = StrutStyle(
+    fontFamily: AppAssets.fontFamily,
+    fontSize: 12,
+    height: 1,
+    leadingDistribution: TextLeadingDistribution.even,
+    forceStrutHeight: true,
+  );
+
+  static const editorBody = StrutStyle(
+    fontFamily: AppAssets.fontFamily,
+    fontSize: 14,
+    height: AppConstants.editorBodyLineHeight,
+    leadingDistribution: TextLeadingDistribution.even,
+    forceStrutHeight: true,
+  );
+}
+
 abstract final class AppAssets {
-  static const font = 'assets/oriflame_sans.ttf';
-  static const introVideo = 'assets/content_0_intro.mp4';
+  static const fontFamily = 'Helvetica';
+  static const fontFamilyFallback = <String>['Arial', 'sans-serif'];
+  static const headerLogo = 'assets/icons/oriflame_logo.png';
+  static const introLoader = 'assets/smart_post_loading_animation.gif';
   static const telegram = 'assets/images/raw_01.png';
   static const profile = 'assets/images/raw_02.png';
   static const productThumbnail = 'assets/images/raw_03.png';

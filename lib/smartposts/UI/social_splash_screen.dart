@@ -12,9 +12,12 @@ class SocialSplashScreen extends StatelessWidget {
 
   bool get _isMetaPlatform =>
       platform.name == AppStrings.instagram ||
+      platform.name == AppStrings.instagramStories ||
       platform.name == AppStrings.facebook ||
+      platform.name == AppStrings.facebookStories ||
       platform.name == AppStrings.messenger ||
-      platform.name == AppStrings.whatsApp;
+      platform.name == AppStrings.whatsApp ||
+      platform.name == AppStrings.whatsAppBusiness;
 
   @override
   Widget build(BuildContext context) {

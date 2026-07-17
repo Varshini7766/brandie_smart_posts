@@ -3,19 +3,21 @@ import 'package:equatable/equatable.dart';
 import '../../common/app_constants.dart';
 import '../../common/app_strings.dart';
 
+enum ShareStoryRing { none, instagram, facebook }
+
 final class SharePlatform extends Equatable {
   const SharePlatform({
     required this.name,
     required this.assetPath,
-    this.innerPadding = 0,
+    this.storyRing = ShareStoryRing.none,
   });
 
   final String name;
   final String assetPath;
-  final double innerPadding;
+  final ShareStoryRing storyRing;
 
   @override
-  List<Object?> get props => <Object?>[name, assetPath, innerPadding];
+  List<Object?> get props => <Object?>[name, assetPath, storyRing];
 }
 
 final class ProductPromotion extends Equatable {
@@ -122,35 +124,25 @@ abstract final class SmartPostFixtures {
   ];
 
   static const sharePlatforms = <SharePlatform>[
+    SharePlatform(name: AppStrings.instagram, assetPath: AppAssets.instagram),
     SharePlatform(
-      name: AppStrings.instagram,
+      name: AppStrings.instagramStories,
       assetPath: AppAssets.instagram,
-      innerPadding: AppConstants.four,
+      storyRing: ShareStoryRing.instagram,
     ),
+    SharePlatform(name: AppStrings.facebook, assetPath: AppAssets.facebook),
     SharePlatform(
-      name: AppStrings.facebook,
+      name: AppStrings.facebookStories,
       assetPath: AppAssets.facebook,
-      innerPadding: AppConstants.four,
+      storyRing: ShareStoryRing.facebook,
     ),
+    SharePlatform(name: AppStrings.tikTok, assetPath: AppAssets.tikTok),
+    SharePlatform(name: AppStrings.whatsApp, assetPath: AppAssets.whatsApp),
     SharePlatform(
-      name: AppStrings.messenger,
-      assetPath: AppAssets.messenger,
-      innerPadding: AppConstants.four,
+      name: AppStrings.whatsAppBusiness,
+      assetPath: AppAssets.whatsAppBusiness,
     ),
-    SharePlatform(
-      name: AppStrings.tikTok,
-      assetPath: AppAssets.tikTok,
-      innerPadding: AppConstants.four,
-    ),
-    SharePlatform(
-      name: AppStrings.whatsApp,
-      assetPath: AppAssets.whatsApp,
-      innerPadding: AppConstants.four,
-    ),
-    SharePlatform(
-      name: AppStrings.telegram,
-      assetPath: AppAssets.telegram,
-      innerPadding: AppConstants.four,
-    ),
+    SharePlatform(name: AppStrings.telegram, assetPath: AppAssets.telegram),
+    SharePlatform(name: AppStrings.messenger, assetPath: AppAssets.messenger),
   ];
 }
