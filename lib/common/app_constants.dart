@@ -26,8 +26,6 @@ abstract final class AppConstants {
   static const pageIndicatorGap = 8.0;
   static const glassRadius = 8.0;
   static const productImageSize = 40.0;
-  static const productCardWidth = 250.0;
-  static const productCardHeight = 52.0;
   static const shareModeHeight = 30.0;
   static const shareModeGap = 4.0;
   static const shareModeRadius = 18.0;
@@ -101,7 +99,7 @@ abstract final class AppConstants {
 
   static const loadingStepDuration = Duration(milliseconds: 700);
   static const loadingCompletePause = Duration(milliseconds: 800);
-  static const shareLoadingStepDuration = Duration(milliseconds: 650);
+  static const shareLoadingStepDuration = Duration(milliseconds: 1200);
   static const introLoaderDuration = Duration(milliseconds: 19270);
   static const productRevealDelay = Duration(seconds: 3);
   static const pageAnimationDuration = Duration(milliseconds: 280);

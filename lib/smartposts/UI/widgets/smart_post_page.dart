@@ -208,9 +208,7 @@ class _ProductCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: AppConstants.productCardWidth,
-      height: AppConstants.productCardHeight,
+    return IntrinsicWidth(
       child: GlassPanel(
         color: AppColors.productGlass,
         padding: const EdgeInsets.all(AppConstants.six),
@@ -228,54 +226,49 @@ class _ProductCard extends StatelessWidget {
               ),
             ),
             const SizedBox(width: AppConstants.four),
-            Expanded(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(
-                    product.name,
-                    maxLines: AppConstants.singleLine,
-                    overflow: TextOverflow.ellipsis,
-                    style: AppTextStyles.productTitle.copyWith(
-                      color: AppColors.white,
-                    ),
+            Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  product.name,
+                  maxLines: AppConstants.singleLine,
+                  overflow: TextOverflow.ellipsis,
+                  style: AppTextStyles.productTitle.copyWith(
+                    color: AppColors.white,
                   ),
-                  Row(
-                    children: <Widget>[
-                      Text(
-                        product.price,
-                        style: AppTextStyles.bodyBold.copyWith(
+                ),
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    Text(
+                      product.price,
+                      style: AppTextStyles.bodyBold.copyWith(
+                        color: AppColors.white,
+                      ),
+                    ),
+                    const SizedBox(width: AppConstants.four),
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: AppConstants.four,
+                        vertical: AppConstants.one,
+                      ),
+                      decoration: BoxDecoration(
+                        color: AppColors.discountGreen,
+                        borderRadius: BorderRadius.circular(AppConstants.four),
+                      ),
+                      child: Text(
+                        product.discount,
+                        maxLines: AppConstants.singleLine,
+                        overflow: TextOverflow.ellipsis,
+                        style: AppTextStyles.label.copyWith(
                           color: AppColors.white,
                         ),
                       ),
-                      const SizedBox(width: AppConstants.four),
-                      Flexible(
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: AppConstants.four,
-                            vertical: AppConstants.one,
-                          ),
-                          decoration: BoxDecoration(
-                            color: AppColors.discountGreen,
-                            borderRadius: BorderRadius.circular(
-                              AppConstants.four,
-                            ),
-                          ),
-                          child: Text(
-                            product.discount,
-                            maxLines: AppConstants.singleLine,
-                            overflow: TextOverflow.ellipsis,
-                            style: AppTextStyles.label.copyWith(
-                              color: AppColors.white,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
+                    ),
+                  ],
+                ),
+              ],
             ),
           ],
         ),
@@ -413,37 +406,55 @@ class _QuickShareIcon extends StatelessWidget {
   Widget build(BuildContext context) {
     final storyGradient = _storyGradient;
 
-    return Container(
-      width: AppConstants.socialIconSize,
-      height: AppConstants.socialIconSize,
-      padding: EdgeInsets.all(
-        storyGradient == null ? AppConstants.zero : AppConstants.storyRingWidth,
-      ),
-      decoration: BoxDecoration(
-        gradient: storyGradient,
-        shape: BoxShape.circle,
-        border: storyGradient == null
-            ? const Border.fromBorderSide(
-                BorderSide(color: AppColors.socialIconBorder),
-              )
-            : null,
-      ),
-      child: DecoratedBox(
-        decoration: const BoxDecoration(
-          color: AppColors.socialIconFaded,
-          shape: BoxShape.circle,
-        ),
-        child: Center(
-          child: SizedBox.square(
-            dimension: AppConstants.socialIconInnerSize,
-            child: Image.asset(
-              platform.assetPath,
-              fit: BoxFit.contain,
-              filterQuality: FilterQuality.high,
+    return SizedBox.square(
+      dimension: AppConstants.socialIconSize,
+      child: CustomPaint(
+        foregroundPainter: storyGradient == null
+            ? null
+            : _StoryRingPainter(gradient: storyGradient),
+        child: DecoratedBox(
+          decoration: const BoxDecoration(
+            color: AppColors.socialIconFaded,
+            shape: BoxShape.circle,
+            border: Border.fromBorderSide(
+              BorderSide(color: AppColors.socialIconBorder),
+            ),
+          ),
+          child: Center(
+            child: SizedBox.square(
+              dimension: AppConstants.socialIconInnerSize,
+              child: Image.asset(
+                platform.assetPath,
+                fit: BoxFit.contain,
+                filterQuality: FilterQuality.high,
+              ),
             ),
           ),
         ),
       ),
     );
+  }
+}
+
+final class _StoryRingPainter extends CustomPainter {
+  const _StoryRingPainter({required this.gradient});
+
+  final Gradient gradient;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final center = size.center(Offset.zero);
+    final radius = (size.shortestSide - AppConstants.storyRingWidth) / 2;
+    final ringBounds = Rect.fromCircle(center: center, radius: radius);
+    final paint = Paint()
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = AppConstants.storyRingWidth
+      ..shader = gradient.createShader(ringBounds);
+    canvas.drawCircle(center, radius, paint);
+  }
+
+  @override
+  bool shouldRepaint(_StoryRingPainter oldDelegate) {
+    return oldDelegate.gradient != gradient;
   }
 }

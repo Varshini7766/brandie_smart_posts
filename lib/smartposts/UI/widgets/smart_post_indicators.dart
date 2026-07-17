@@ -15,20 +15,34 @@ class SmartPostIndicators extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: List<Widget>.generate(
-        count,
-        (index) => AnimatedContainer(
-          duration: AppConstants.pageAnimationDuration,
-          width: AppConstants.pageIndicatorSize,
-          height: AppConstants.pageIndicatorSize,
-          margin: const EdgeInsets.only(bottom: AppConstants.pageIndicatorGap),
-          decoration: BoxDecoration(
-            color: index == activeIndex
-                ? AppColors.brandGreen
-                : AppColors.white,
-            shape: BoxShape.circle,
+    return Container(
+      padding: const EdgeInsets.symmetric(
+        horizontal: AppConstants.ten,
+        vertical: AppConstants.twelve,
+      ),
+      decoration: BoxDecoration(
+        color: AppColors.glass,
+        borderRadius: BorderRadius.circular(AppConstants.thirty),
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: List<Widget>.generate(
+          count,
+          (index) => AnimatedContainer(
+            duration: AppConstants.pageAnimationDuration,
+            width: AppConstants.pageIndicatorSize,
+            height: AppConstants.pageIndicatorSize,
+            margin: EdgeInsets.only(
+              bottom: index == count - 1
+                  ? AppConstants.zero
+                  : AppConstants.pageIndicatorGap,
+            ),
+            decoration: BoxDecoration(
+              color: index == activeIndex
+                  ? AppColors.brandGreen
+                  : AppColors.white,
+              shape: BoxShape.circle,
+            ),
           ),
         ),
       ),
