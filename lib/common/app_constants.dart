@@ -43,8 +43,7 @@ abstract final class AppConstants {
   static const cameraIconSize = 32.0;
   static const headerLogoWidth = 117.0;
   static const headerLogoHeight = 32.0;
-  static const navIconSize = 29.0;
-  static const activeNavIconSize = 32.0;
+  static const navIconSize = 32.0;
   static const homeIndicatorWidth = 117.0;
   static const homeIndicatorHeight = 3.0;
   static const loadingDialogWidth = 274.0;
@@ -107,13 +106,6 @@ abstract final class AppConstants {
   static const pageScrollPhysics = PageScrollPhysics(
     parent: ClampingScrollPhysics(),
   );
-  static const navigationIcons = <IconData>[
-    Icons.local_offer_outlined,
-    Icons.search,
-    Icons.home_outlined,
-    Icons.chat_bubble_outline,
-    Icons.account_circle_outlined,
-  ];
 }
 
 abstract final class AppTextStyles {
@@ -223,25 +215,24 @@ abstract final class AppAssets {
   static const fontFamily = 'Helvetica';
   static const fontFamilyFallback = <String>['Arial', 'sans-serif'];
   static const headerLogo = 'assets/icons/oriflame_logo.png';
+  static const bottomNavigationIcons = <String>[
+    'assets/icons/nav_offers.png',
+    'assets/icons/nav_search.png',
+    'assets/icons/nav_home.png',
+    'assets/icons/nav_chat.png',
+    'assets/icons/nav_profile.png',
+  ];
   static const introLoader = 'assets/smart_post_loading_animation.gif';
-  static const telegram = 'assets/images/raw_01.png';
-  static const profile = 'assets/images/raw_02.png';
-  static const productThumbnail = 'assets/images/raw_03.png';
-  static const lipstickPost = 'assets/images/raw_04.jpg';
-  static const instagramBackground = 'assets/images/raw_05.png';
-  static const instagramStoriesBackground = 'assets/images/raw_06.png';
-  static const tikTokLarge = 'assets/images/raw_07.png';
-  static const libraryPreview = 'assets/images/raw_08.jpeg';
-  static const perfumePost = 'assets/images/raw_09.jpg';
-  static const oriflameLogoLarge = 'assets/images/raw_10.png';
-  static const messenger = 'assets/images/raw_11.png';
-  static const oriflameLogo = 'assets/images/raw_12.png';
-  static const tikTok = 'assets/images/raw_13.png';
-  static const mascaraPost = 'assets/images/raw_14.jpg';
-  static const facebook = 'assets/images/raw_15.png';
-  static const whatsApp = 'assets/images/raw_16.png';
-  static const whatsAppBusiness = 'assets/images/raw_17.png';
-  static const product = 'assets/images/raw_18.png';
-  static const instagram = 'assets/images/raw_19.png';
-  static const telegramAlternate = 'assets/images/raw_20.png';
+  static const telegram = 'assets/icons/telegram.png';
+  static const messenger = 'assets/icons/messenger.png';
+  static const tikTok = 'assets/icons/tiktok.png';
+  static const facebook = 'assets/icons/facebook.png';
+  static const whatsApp = 'assets/icons/whatsapp.png';
+  static const whatsAppBusiness = 'assets/icons/whatsapp_business.png';
+  static const instagram = 'assets/icons/instagram.png';
+  static const profile = 'assets/images/profile.png';
+  static const productThumbnail = 'assets/images/product_thumbnail.png';
+  static const lipstickPost = 'assets/images/lipstick_post.jpg';
+  static const perfumePost = 'assets/images/perfume_post.jpg';
+  static const mascaraPost = 'assets/images/mascara_post.jpg';
 }

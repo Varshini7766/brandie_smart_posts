@@ -25,15 +25,19 @@ class SmartPostsBottomNavigation extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: List<Widget>.generate(
-                AppConstants.navigationIcons.length,
+                AppAssets.bottomNavigationIcons.length,
                 (index) => IconButton(
                   onPressed: () => onSelected(index),
-                  icon: Icon(
-                    AppConstants.navigationIcons[index],
-                    color: AppColors.white,
-                    size: index == activeIndex
-                        ? AppConstants.activeNavIconSize
-                        : AppConstants.navIconSize,
+                  icon: Semantics(
+                    selected: index == activeIndex,
+                    child: SizedBox.square(
+                      dimension: AppConstants.navIconSize,
+                      child: Image.asset(
+                        AppAssets.bottomNavigationIcons[index],
+                        fit: BoxFit.contain,
+                        filterQuality: FilterQuality.high,
+                      ),
+                    ),
                   ),
                 ),
               ),

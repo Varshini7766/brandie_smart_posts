@@ -35,7 +35,7 @@ UI widgets contain no backend logic.
 ## Assignment decisions
 
 - No backend or API is used; all content is deterministic local fixture data.
-- Figma images and social logos are stored under `assets/images/`.
+- Post photos live under `assets/images/`; social and navigation icons live under `assets/icons/`.
 - Edit Caption opens a bottom sheet with the keyboard focused immediately.
 - Captions are limited to Instagram's 2200-character maximum, with a live
   counter shown at the bottom of the sheet.
