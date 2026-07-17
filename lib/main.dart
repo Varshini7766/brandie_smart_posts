@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'common/app_strings.dart';
@@ -7,12 +8,21 @@ import 'smartposts/UI/smart_posts_screen.dart';
 import 'smartposts/bloc/smart_posts_bloc.dart';
 import 'smartposts/bloc/smart_posts_event.dart';
 
-void main() => runApp(const BrandieApp());
+void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setSystemUIOverlayStyle(
+    const SystemUiOverlayStyle(
+      statusBarColor: Colors.white,
+      statusBarIconBrightness: Brightness.dark,
+      statusBarBrightness: Brightness.light,
+    ),
+  );
+  runApp(const BrandieApp());
+}
 
 class BrandieApp extends StatelessWidget {
   const BrandieApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

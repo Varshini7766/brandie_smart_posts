@@ -28,4 +28,11 @@ abstract final class AppUtils {
         '${AppStrings.captionCharacterSeparator}'
         '${AppConstants.captionMaxLength}';
   }
+
+  static String captionPreview(String caption) {
+    if (caption.length <= AppConstants.captionPreviewLength) {
+      return caption;
+    }
+    return caption.substring(0, AppConstants.captionPreviewLength).trimRight();
+  }
 }

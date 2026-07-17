@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../common/app_colors.dart';
 import '../../../common/app_constants.dart';
 import '../../../common/app_strings.dart';
+import '../../../common/utils.dart';
 import '../../../common_widgets/glass_panel.dart';
 import '../../models/smart_post.dart';
 
@@ -225,8 +226,8 @@ class _PostDetails extends StatelessWidget {
           ),
         if (post.product != null)
           const SizedBox(height: AppConstants.contentCardGap),
-        _MusicCard(post: post),
-        const SizedBox(height: AppConstants.contentCardGap),
+        const _ShareModeSelector(),
+        const SizedBox(height: AppConstants.eight),
         _CaptionCard(post: post, onEdit: onEditCaption),
       ],
     );
@@ -241,106 +242,144 @@ class _ProductCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GlassPanel(
-      color: AppColors.productGlass,
-      padding: const EdgeInsets.all(AppConstants.six),
-      onTap: onTap,
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          ClipRRect(
-            borderRadius: BorderRadius.circular(AppConstants.two),
-            child: Image.asset(
-              product.imagePath,
-              width: AppConstants.productImageSize,
-              height: AppConstants.productImageSize,
-              fit: BoxFit.cover,
+    return IntrinsicWidth(
+      child: GlassPanel(
+        color: AppColors.productGlass,
+        padding: const EdgeInsets.all(AppConstants.six),
+        onTap: onTap,
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            ClipRRect(
+              borderRadius: BorderRadius.circular(AppConstants.two),
+              child: Image.asset(
+                product.imagePath,
+                width: AppConstants.productImageSize,
+                height: AppConstants.productImageSize,
+                fit: BoxFit.cover,
+              ),
             ),
-          ),
-          const SizedBox(width: AppConstants.four),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(
-                  product.name,
-                  maxLines: AppConstants.singleLine,
-                  overflow: TextOverflow.ellipsis,
-                  style: AppTextStyles.productTitle.copyWith(
-                    color: AppColors.white,
-                  ),
-                ),
-                Row(
-                  children: <Widget>[
-                    Text(
-                      product.price,
-                      style: AppTextStyles.bodyBold.copyWith(
-                        color: AppColors.white,
-                      ),
+            const SizedBox(width: AppConstants.four),
+            ConstrainedBox(
+              constraints: const BoxConstraints(
+                maxWidth: AppConstants.productTextMaxWidth,
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    product.name,
+                    maxLines: AppConstants.singleLine,
+                    overflow: TextOverflow.ellipsis,
+                    style: AppTextStyles.productTitle.copyWith(
+                      color: AppColors.white,
                     ),
-                    const SizedBox(width: AppConstants.four),
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: AppConstants.four,
-                        vertical: AppConstants.one,
-                      ),
-                      decoration: BoxDecoration(
-                        color: AppColors.discountGreen,
-                        borderRadius: BorderRadius.circular(AppConstants.four),
-                      ),
-                      child: Text(
-                        product.discount,
-                        style: AppTextStyles.label.copyWith(
+                  ),
+                  Row(
+                    children: <Widget>[
+                      Text(
+                        product.price,
+                        style: AppTextStyles.bodyBold.copyWith(
                           color: AppColors.white,
                         ),
                       ),
-                    ),
-                  ],
-                ),
-              ],
+                      const SizedBox(width: AppConstants.four),
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: AppConstants.four,
+                          vertical: AppConstants.one,
+                        ),
+                        decoration: BoxDecoration(
+                          color: AppColors.discountGreen,
+                          borderRadius: BorderRadius.circular(
+                            AppConstants.four,
+                          ),
+                        ),
+                        child: Text(
+                          product.discount,
+                          style: AppTextStyles.label.copyWith(
+                            color: AppColors.white,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
 }
 
-class _MusicCard extends StatelessWidget {
-  const _MusicCard({required this.post});
-
-  final SmartPost post;
+class _ShareModeSelector extends StatelessWidget {
+  const _ShareModeSelector();
 
   @override
   Widget build(BuildContext context) {
-    return GlassPanel(
-      child: Row(
-        children: <Widget>[
-          const Icon(
-            Icons.music_note,
-            size: AppConstants.eighteen,
-            color: AppColors.white,
+    return const Row(
+      children: <Widget>[
+        Expanded(
+          child: _ShareModePill(
+            label: AppStrings.forPost,
+            icon: Icons.edit_outlined,
+            active: true,
           ),
-          const SizedBox(width: AppConstants.four),
-          Text(
-            AppStrings.recommended,
-            style: AppTextStyles.label.copyWith(color: AppColors.white),
+        ),
+        SizedBox(width: AppConstants.shareModeGap),
+        Expanded(
+          child: _ShareModePill(
+            label: AppStrings.forStory,
+            icon: Icons.refresh,
+          ),
+        ),
+        SizedBox(width: AppConstants.shareModeGap),
+        Expanded(
+          child: _ShareModePill(
+            label: AppStrings.forMessage,
+            icon: Icons.chat_bubble_outline,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _ShareModePill extends StatelessWidget {
+  const _ShareModePill({
+    required this.label,
+    required this.icon,
+    this.active = false,
+  });
+
+  final String label;
+  final IconData icon;
+  final bool active;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: AppConstants.shareModeHeight,
+      decoration: BoxDecoration(
+        color: active ? AppColors.shareModeActive : AppColors.shareModeInactive,
+        borderRadius: BorderRadius.circular(AppConstants.shareModeRadius),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Icon(
+            icon,
+            color: AppColors.white,
+            size: AppConstants.shareModeIconSize,
           ),
           const SizedBox(width: AppConstants.four),
           Flexible(
-            child: Text.rich(
-              TextSpan(
-                children: <InlineSpan>[
-                  TextSpan(
-                    text: post.songTitle,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.w700,
-                      fontStyle: FontStyle.italic,
-                    ),
-                  ),
-                  TextSpan(text: post.songArtist),
-                ],
-              ),
+            child: Text(
+              label,
+              maxLines: AppConstants.singleLine,
               overflow: TextOverflow.ellipsis,
               style: AppTextStyles.body.copyWith(color: AppColors.white),
             ),
@@ -360,87 +399,91 @@ class _CaptionCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GlassPanel(
-      onTap: onEdit,
-      padding: const EdgeInsets.symmetric(
-        horizontal: AppConstants.eight,
-        vertical: AppConstants.six,
-      ),
+      color: AppColors.captionOverlay,
+      padding: const EdgeInsets.all(AppConstants.zero),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Row(
-            children: <Widget>[
-              const Icon(
-                Icons.auto_awesome,
-                color: AppColors.white,
-                size: AppConstants.eighteen,
-              ),
-              const SizedBox(width: AppConstants.four),
-              Expanded(
-                child: Text(
-                  AppStrings.captionSuggestion,
-                  maxLines: AppConstants.singleLine,
-                  overflow: TextOverflow.ellipsis,
-                  style: AppTextStyles.label.copyWith(color: AppColors.white),
-                ),
-              ),
-              Row(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  const Icon(
-                    Icons.edit_outlined,
-                    color: AppColors.white,
-                    size: AppConstants.sixteen,
-                  ),
-                  const SizedBox(width: AppConstants.two),
-                  Text(
-                    AppStrings.editCaption,
-                    style: AppTextStyles.bodyBold.copyWith(
-                      color: AppColors.white,
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-          const SizedBox(height: AppConstants.eight),
           Text.rich(
             TextSpan(
               children: <InlineSpan>[
-                TextSpan(text: post.caption),
+                TextSpan(text: AppUtils.captionPreview(post.caption)),
                 const TextSpan(text: AppStrings.ellipsis),
                 const TextSpan(
                   text: AppStrings.seeMore,
                   style: TextStyle(
-                    fontWeight: FontWeight.w700,
                     decoration: TextDecoration.underline,
                     decorationColor: AppColors.white,
                   ),
                 ),
               ],
             ),
-            maxLines: AppConstants.captionCollapsedLines,
+            maxLines: AppConstants.captionPreviewLines,
             overflow: TextOverflow.ellipsis,
-            style: AppTextStyles.body.copyWith(color: AppColors.white),
+            style: AppTextStyles.body.copyWith(
+              color: AppColors.white,
+              fontWeight: FontWeight.w400,
+            ),
           ),
           const SizedBox(height: AppConstants.eight),
-          Text(
-            post.referralCode,
-            maxLines: AppConstants.singleLine,
-            overflow: TextOverflow.ellipsis,
-            style: AppTextStyles.body.copyWith(
-              color: AppColors.referralText,
-              fontStyle: FontStyle.italic,
-            ),
-          ),
-          Text(
-            post.referralLink,
-            maxLines: AppConstants.singleLine,
-            overflow: TextOverflow.ellipsis,
-            style: AppTextStyles.body.copyWith(
-              color: AppColors.referralText,
-              fontStyle: FontStyle.italic,
-            ),
+          Row(
+            children: <Widget>[
+              ClipOval(
+                child: Image.asset(
+                  post.profileAsset,
+                  width: AppConstants.suggestionProfileSize,
+                  height: AppConstants.suggestionProfileSize,
+                  fit: BoxFit.cover,
+                ),
+              ),
+              const SizedBox(width: AppConstants.four),
+              const Icon(
+                Icons.music_note,
+                color: AppColors.white,
+                size: AppConstants.sixteen,
+              ),
+              Flexible(
+                child: Text.rich(
+                  TextSpan(
+                    children: <InlineSpan>[
+                      const TextSpan(text: AppStrings.suggested),
+                      TextSpan(
+                        text: post.songTitle,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.w700,
+                          fontStyle: FontStyle.italic,
+                        ),
+                      ),
+                      TextSpan(text: post.songArtist),
+                    ],
+                  ),
+                  maxLines: AppConstants.singleLine,
+                  overflow: TextOverflow.ellipsis,
+                  style: AppTextStyles.body.copyWith(color: AppColors.white),
+                ),
+              ),
+              const SizedBox(width: AppConstants.four),
+              InkWell(
+                onTap: onEdit,
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    const Icon(
+                      Icons.edit_outlined,
+                      color: AppColors.white,
+                      size: AppConstants.sixteen,
+                    ),
+                    const SizedBox(width: AppConstants.four),
+                    Text(
+                      AppStrings.editCaption,
+                      style: AppTextStyles.body.copyWith(
+                        color: AppColors.white,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
         ],
       ),
@@ -483,8 +526,11 @@ class _QuickShareRow extends StatelessWidget {
                       height: AppConstants.socialIconSize,
                       padding: EdgeInsets.all(platform.innerPadding),
                       decoration: const BoxDecoration(
-                        color: AppColors.white,
+                        color: AppColors.socialIconFaded,
                         shape: BoxShape.circle,
+                        border: Border.fromBorderSide(
+                          BorderSide(color: AppColors.socialIconBorder),
+                        ),
                       ),
                       child: Image.asset(platform.assetPath),
                     ),

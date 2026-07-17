@@ -128,17 +128,7 @@ abstract final class SmartPostFixtures {
       innerPadding: AppConstants.four,
     ),
     SharePlatform(
-      name: AppStrings.instagramStories,
-      assetPath: AppAssets.instagram,
-      innerPadding: AppConstants.four,
-    ),
-    SharePlatform(
       name: AppStrings.facebook,
-      assetPath: AppAssets.facebook,
-      innerPadding: AppConstants.four,
-    ),
-    SharePlatform(
-      name: AppStrings.facebookStories,
       assetPath: AppAssets.facebook,
       innerPadding: AppConstants.four,
     ),
@@ -155,11 +145,6 @@ abstract final class SmartPostFixtures {
     SharePlatform(
       name: AppStrings.whatsApp,
       assetPath: AppAssets.whatsApp,
-      innerPadding: AppConstants.four,
-    ),
-    SharePlatform(
-      name: AppStrings.whatsAppBusiness,
-      assetPath: AppAssets.whatsAppBusiness,
       innerPadding: AppConstants.four,
     ),
     SharePlatform(

@@ -11,7 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-  testWidgets('shows the staged Smart Posts loading experience', (
+  testWidgets('shows the Figma intro before the Smart Posts feed', (
     tester,
   ) async {
     tester.view.physicalSize = const Size(375, 812);
@@ -23,10 +23,9 @@ void main() {
     await tester.pump();
 
     expect(find.text(AppStrings.smartPost), findsOneWidget);
-    expect(find.text(AppStrings.loadingTitle), findsOneWidget);
-    expect(find.text(AppStrings.loadingPopular), findsOneWidget);
+    expect(find.text(AppStrings.loadingTitle), findsNothing);
 
-    for (var step = 0; step < 10; step++) {
+    for (var step = 0; step < 5; step++) {
       await tester.pump(const Duration(seconds: 1));
     }
   });

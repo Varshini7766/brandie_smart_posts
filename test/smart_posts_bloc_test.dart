@@ -35,5 +35,19 @@ void main() {
       expect(bloc.state.posts.first.caption, updatedCaption);
       expect(bloc.state.captionDirty, isFalse);
     });
+
+    test('prepares content before launching the selected platform', () async {
+      final bloc = SmartPostsBloc();
+      addTearDown(bloc.close);
+
+      bloc.add(const SharePlatformSelected('Instagram'));
+
+      await bloc.stream.firstWhere(
+        (state) => state.shareLaunchStatus == ShareLaunchStatus.ready,
+      );
+
+      expect(bloc.state.selectedSharePlatform, 'Instagram');
+      expect(bloc.state.shareLoadingStep, 3);
+    });
   });
 }

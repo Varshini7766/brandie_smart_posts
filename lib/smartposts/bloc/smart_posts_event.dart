@@ -16,6 +16,10 @@ final class SmartPostsStarted extends SmartPostsEvent {
   List<Object?> get props => <Object?>[animate];
 }
 
+final class SmartPostsIntroCompleted extends SmartPostsEvent {
+  const SmartPostsIntroCompleted();
+}
+
 final class SmartPostChanged extends SmartPostsEvent {
   const SmartPostChanged(this.index);
 
@@ -62,6 +66,10 @@ final class SharePlatformSelected extends SmartPostsEvent {
 
   @override
   List<Object?> get props => <Object?>[platformName];
+}
+
+final class ShareLaunchHandled extends SmartPostsEvent {
+  const ShareLaunchHandled();
 }
 
 final class SmartPostsTabSelected extends SmartPostsEvent {

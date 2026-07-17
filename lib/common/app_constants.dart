@@ -3,8 +3,12 @@ import 'package:flutter/material.dart';
 abstract final class AppConstants {
   static const referenceWidth = 375.0;
   static const referenceHeight = 812.0;
-  static const headerHeight = 62.0;
+  static const headerHeight = 59.0;
   static const tabHeight = 46.0;
+  static const smartPostTabWidth = 67.0;
+  static const libraryTabWidth = 46.0;
+  static const communitiesTabWidth = 82.0;
+  static const shareAndWinTabWidth = 74.0;
   static const bottomNavigationHeight = 68.0;
   static const horizontalPadding = 16.0;
   static const contentWidth = 343.0;
@@ -18,8 +22,15 @@ abstract final class AppConstants {
   static const glassRadius = 8.0;
   static const productImageSize = 40.0;
   static const productCardHeight = 52.0;
-  static const musicCardHeight = 34.0;
+  static const productTextMaxWidth = 180.0;
+  static const shareModeHeight = 30.0;
+  static const shareModeGap = 4.0;
+  static const shareModeRadius = 18.0;
+  static const shareModeIconSize = 16.0;
+  static const suggestionProfileSize = 26.0;
   static const captionCardHeight = 126.0;
+  static const captionPreviewLength = 210;
+  static const captionPreviewLines = 4;
   static const contentCardGap = 4.0;
   static const contentBottomOffset = 132.0;
   static const shareRowBottomOffset = 83.0;
@@ -27,11 +38,14 @@ abstract final class AppConstants {
   static const postCounterRight = 16.0;
   static const indicatorRight = 16.0;
   static const indicatorTop = 265.0;
-  static const headerIconSize = 32.0;
+  static const headerIconSize = 40.0;
   static const headerLogoWidth = 117.0;
   static const headerLogoHeight = 32.0;
-  static const headerLogoSourceSize = 117.0;
-  static const headerLogoCropOffset = -43.0;
+  static const headerLogoAssetSize = 300.0;
+  static const headerLogoCropWidth = 292.0;
+  static const headerLogoCropHeight = 108.0;
+  static const headerLogoCropLeft = -4.0;
+  static const headerLogoCropTop = -96.0;
   static const navIconSize = 29.0;
   static const activeNavIconSize = 32.0;
   static const homeIndicatorWidth = 117.0;
@@ -40,6 +54,15 @@ abstract final class AppConstants {
   static const loadingDialogTop = 52.0;
   static const loadingStepGap = 18.0;
   static const loadingIconSize = 20.0;
+  static const shareLoadingDialogWidth = 220.0;
+  static const shareLoadingDialogHeight = 96.0;
+  static const shareLoadingDialogRadius = 4.0;
+  static const shareLoadingSpinnerSize = 32.0;
+  static const shareLoadingProgressWidth = 106.0;
+  static const shareLoadingProgressHeight = 5.0;
+  static const shareLoadingBlurSigma = 8.0;
+  static const socialSplashIconSize = 64.0;
+  static const socialSplashFooterBottom = 42.0;
   static const editorHorizontalPadding = 16.0;
   static const editorHeaderHeight = 56.0;
   static const editorCaptionMinHeight = 160.0;
@@ -78,9 +101,14 @@ abstract final class AppConstants {
 
   static const loadingStepDuration = Duration(milliseconds: 700);
   static const loadingCompletePause = Duration(milliseconds: 800);
+  static const shareLoadingStepDuration = Duration(milliseconds: 650);
   static const productRevealDelay = Duration(seconds: 3);
   static const pageAnimationDuration = Duration(milliseconds: 280);
   static const feedbackDuration = Duration(seconds: 2);
+  static const carouselMinimumScale = 0.94;
+  static const carouselMinimumOpacity = 0.65;
+  static const carouselScaleRange = 0.06;
+  static const carouselOpacityRange = 0.35;
 
   static const pageScrollPhysics = PageScrollPhysics();
   static const navigationIcons = <IconData>[
@@ -137,6 +165,7 @@ abstract final class AppTextStyles {
 
 abstract final class AppAssets {
   static const font = 'assets/oriflame_sans.ttf';
+  static const introVideo = 'assets/content_0_intro.mp4';
   static const telegram = 'assets/images/raw_01.png';
   static const profile = 'assets/images/raw_02.png';
   static const productThumbnail = 'assets/images/raw_03.png';

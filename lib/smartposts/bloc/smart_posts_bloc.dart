@@ -9,6 +9,7 @@ import 'smart_posts_state.dart';
 final class SmartPostsBloc extends Bloc<SmartPostsEvent, SmartPostsState> {
   SmartPostsBloc() : super(SmartPostsState.initial()) {
     on<SmartPostsStarted>(_onStarted);
+    on<SmartPostsIntroCompleted>(_onIntroCompleted);
     on<SmartPostChanged>(_onPostChanged);
     on<SmartPostProductRevealed>(_onProductRevealed);
     on<CaptionEditorOpened>(_onCaptionEditorOpened);
@@ -16,16 +17,14 @@ final class SmartPostsBloc extends Bloc<SmartPostsEvent, SmartPostsState> {
     on<CaptionSaved>(_onCaptionSaved);
     on<CaptionEditorClosed>(_onCaptionEditorClosed);
     on<SharePlatformSelected>(_onSharePlatformSelected);
+    on<ShareLaunchHandled>(_onShareLaunchHandled);
     on<SmartPostsTabSelected>(_onTabSelected);
     on<SmartPostsNavigationSelected>(_onNavigationSelected);
   }
 
   Timer? _productRevealTimer;
 
-  Future<void> _onStarted(
-    SmartPostsStarted event,
-    Emitter<SmartPostsState> emit,
-  ) async {
+  void _onStarted(SmartPostsStarted event, Emitter<SmartPostsState> emit) {
     emit(
       state.copyWith(
         status: SmartPostsStatus.loading,
@@ -44,18 +43,19 @@ final class SmartPostsBloc extends Bloc<SmartPostsEvent, SmartPostsState> {
       );
       return;
     }
+  }
 
-    // The design communicates personalization through four sequential steps.
-    // Keeping this sequence in Bloc makes the UI a pure representation of it.
-    for (var step = 1; step <= AppConstants.animationSteps; step++) {
-      await Future<void>.delayed(AppConstants.loadingStepDuration);
-      if (emit.isDone) return;
-      emit(state.copyWith(completedLoadingSteps: step));
-    }
-
-    await Future<void>.delayed(AppConstants.loadingCompletePause);
-    if (emit.isDone) return;
-    emit(state.copyWith(status: SmartPostsStatus.ready));
+  void _onIntroCompleted(
+    SmartPostsIntroCompleted event,
+    Emitter<SmartPostsState> emit,
+  ) {
+    if (state.status == SmartPostsStatus.ready) return;
+    emit(
+      state.copyWith(
+        status: SmartPostsStatus.ready,
+        completedLoadingSteps: AppConstants.animationSteps,
+      ),
+    );
     _scheduleProductReveal();
   }
 
@@ -141,11 +141,42 @@ final class SmartPostsBloc extends Bloc<SmartPostsEvent, SmartPostsState> {
     );
   }
 
-  void _onSharePlatformSelected(
+  Future<void> _onSharePlatformSelected(
     SharePlatformSelected event,
     Emitter<SmartPostsState> emit,
+  ) async {
+    emit(
+      state.copyWith(
+        selectedSharePlatform: event.platformName,
+        shareLaunchStatus: ShareLaunchStatus.preparing,
+        shareLoadingStep: 0,
+      ),
+    );
+
+    // Quick Share prepares local content in the same staged order as the
+    // prototype before handing control to the selected social application.
+    for (var step = 1; step < AppConstants.animationSteps; step++) {
+      await Future<void>.delayed(AppConstants.shareLoadingStepDuration);
+      if (emit.isDone) return;
+      emit(state.copyWith(shareLoadingStep: step));
+    }
+
+    await Future<void>.delayed(AppConstants.shareLoadingStepDuration);
+    if (emit.isDone) return;
+    emit(state.copyWith(shareLaunchStatus: ShareLaunchStatus.ready));
+  }
+
+  void _onShareLaunchHandled(
+    ShareLaunchHandled event,
+    Emitter<SmartPostsState> emit,
   ) {
-    emit(state.copyWith(selectedSharePlatform: event.platformName));
+    emit(
+      state.copyWith(
+        clearSelectedSharePlatform: true,
+        shareLaunchStatus: ShareLaunchStatus.idle,
+        shareLoadingStep: 0,
+      ),
+    );
   }
 
   void _onTabSelected(

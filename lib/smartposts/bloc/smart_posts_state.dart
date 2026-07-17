@@ -4,6 +4,8 @@ import '../models/smart_post.dart';
 
 enum SmartPostsStatus { initial, loading, ready }
 
+enum ShareLaunchStatus { idle, preparing, ready }
+
 final class SmartPostsState extends Equatable {
   const SmartPostsState({
     required this.status,
@@ -17,6 +19,8 @@ final class SmartPostsState extends Equatable {
     this.draftCaption = '',
     this.captionDirty = false,
     this.selectedSharePlatform,
+    this.shareLaunchStatus = ShareLaunchStatus.idle,
+    this.shareLoadingStep = 0,
   });
 
   factory SmartPostsState.initial() {
@@ -42,6 +46,8 @@ final class SmartPostsState extends Equatable {
   final String draftCaption;
   final bool captionDirty;
   final String? selectedSharePlatform;
+  final ShareLaunchStatus shareLaunchStatus;
+  final int shareLoadingStep;
 
   SmartPost get activePost => posts[activePostIndex];
   bool get isEditing => editingPostIndex != null;
@@ -59,6 +65,9 @@ final class SmartPostsState extends Equatable {
     String? draftCaption,
     bool? captionDirty,
     String? selectedSharePlatform,
+    bool clearSelectedSharePlatform = false,
+    ShareLaunchStatus? shareLaunchStatus,
+    int? shareLoadingStep,
   }) {
     return SmartPostsState(
       status: status ?? this.status,
@@ -75,8 +84,11 @@ final class SmartPostsState extends Equatable {
           : editingPostIndex ?? this.editingPostIndex,
       draftCaption: draftCaption ?? this.draftCaption,
       captionDirty: captionDirty ?? this.captionDirty,
-      selectedSharePlatform:
-          selectedSharePlatform ?? this.selectedSharePlatform,
+      selectedSharePlatform: clearSelectedSharePlatform
+          ? null
+          : selectedSharePlatform ?? this.selectedSharePlatform,
+      shareLaunchStatus: shareLaunchStatus ?? this.shareLaunchStatus,
+      shareLoadingStep: shareLoadingStep ?? this.shareLoadingStep,
     );
   }
 
@@ -93,5 +105,7 @@ final class SmartPostsState extends Equatable {
     draftCaption,
     captionDirty,
     selectedSharePlatform,
+    shareLaunchStatus,
+    shareLoadingStep,
   ];
 }

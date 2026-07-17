@@ -13,11 +13,15 @@ abstract final class AppStrings {
   static const pickCount = '1 of 3';
   static const of = 'of';
   static const recommended = 'RECOMMENDED:';
+  static const suggested = 'Suggested: ';
+  static const forPost = 'For Post';
+  static const forStory = 'For story';
+  static const forMessage = 'For message';
   static const captionSuggestion = 'CAPTION SUGGESTION';
   static const editCaption = 'Edit Caption';
   static const save = 'Save';
   static const captionCharacterSeparator = ' / ';
-  static const seeMore = 'see more';
+  static const seeMore = 'See More';
   static const ellipsis = '... ';
   static const allSet = 'All set! Get ready to share...';
   static const loadingTitle = 'Building personalised Smart Posts for you!';
@@ -64,6 +68,12 @@ abstract final class AppStrings {
   static const whatsApp = 'WhatsApp';
   static const whatsAppBusiness = 'WhatsApp Business';
   static const telegram = 'Telegram';
+  static const shareLoadingSalesLink = 'Generating your sales link...';
+  static const shareLoadingCaption = 'Copying the caption to clipboard';
+  static const shareLoadingProfile = 'Saving the content to your profile';
+  static const shareLoadingSocial = 'Preparing the content for social media';
+  static const from = 'from';
+  static const meta = '∞ Meta';
   static const copiedShareMessage = 'Post ready to share with';
   static const productOpenedMessage =
       'Product link would open the personal beauty store.';

@@ -20,24 +20,41 @@ class SmartPostsTabs extends StatelessWidget {
     AppStrings.communities,
     AppStrings.shareAndWin,
   ];
+  static const _widths = <double>[
+    AppConstants.smartPostTabWidth,
+    AppConstants.libraryTabWidth,
+    AppConstants.communitiesTabWidth,
+    AppConstants.shareAndWinTabWidth,
+  ];
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       height: AppConstants.tabHeight,
-      child: Row(
-        children: List<Widget>.generate(
-          _labels.length,
-          (index) => Expanded(
-            child: InkWell(
-              onTap: () => onSelected(index),
-              child: Center(
-                child: Text(
-                  _labels[index],
-                  style: AppTextStyles.tab.copyWith(
-                    color: index == activeIndex
-                        ? AppColors.brandGreen
-                        : AppColors.black,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(
+          horizontal: AppConstants.horizontalPadding,
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: List<Widget>.generate(
+            _labels.length,
+            (index) => SizedBox(
+              width: _widths[index],
+              child: InkWell(
+                onTap: () => onSelected(index),
+                child: Center(
+                  child: FittedBox(
+                    fit: BoxFit.scaleDown,
+                    child: Text(
+                      _labels[index],
+                      maxLines: AppConstants.singleLine,
+                      style: AppTextStyles.tab.copyWith(
+                        color: index == activeIndex
+                            ? AppColors.brandGreen
+                            : AppColors.tabText,
+                      ),
+                    ),
                   ),
                 ),
               ),
