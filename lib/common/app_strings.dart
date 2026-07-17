@@ -34,24 +34,28 @@ abstract final class AppStrings {
   static const trendingProduct = 'Trending right now and on sale';
   static const referralCode = 'Use my referral code: UK-AMANDA3012';
   static const referralLink =
-      'Use my referral link: www.oriflame.com/giordani/amanda3012';
+      'Use my referral link: www.oriflame.com/giordani/amada3012';
+  static const referralSuffix = '\n\n$referralCode\n$referralLink';
   static const postOneCaption =
       '💄 Elevate your beauty with the Giordani Gold - Eternal Glow '
       'Lipstick SPF 25! This luxurious creamy lipstick doesn’t just promise '
       'rich pigments but brings you the benefits of hyaluronic acid and '
       'collagen-boosting peptides too. Pamper your lips with care while '
       'enjoying a long-lasting, luminous matte colour. 💋 ✨ '
-      '#Oriflame #GiordaniGold #LipCareGoals';
+      '#Oriflame #GiordaniGold #LipCareGoals'
+      '$referralSuffix';
   static const postTwoCaption =
       '✨ Experience the elegance of Eclat Amour—a fragrance that captures '
       'the essence of romance and sophistication. Let every spritz wrap you '
       'in timeless charm and effortless allure. 💕 '
-      '#EclatAmour #TimelessElegance';
+      '#EclatAmour #TimelessElegance'
+      '$referralSuffix';
   static const postThreeCaption =
       'Unlock the power of bold, beautiful lashes! With WonderLash Mascara, '
       'get ultimate length, volume, and definition for a stunning, '
       'eye-catching look. One swipe is all it takes! 💖 '
-      '#WonderLash #LashesForDays';
+      '#WonderLash #LashesForDays'
+      '$referralSuffix';
   static const badHabits = 'Bad Habits';
   static const edSheeran = ' by Ed Sheeran';
   static const unstoppable = 'Unstoppable';

@@ -11,6 +11,7 @@ import '../models/smart_post.dart';
 import 'social_splash_screen.dart';
 import 'widgets/caption_editor_sheet.dart';
 import 'widgets/share_loading_overlay.dart';
+import 'widgets/smart_post_indicators.dart';
 import 'widgets/smart_post_page.dart';
 import 'widgets/smart_posts_bottom_navigation.dart';
 import 'widgets/smart_posts_header.dart';
@@ -26,11 +27,14 @@ class SmartPostsScreen extends StatefulWidget {
 
 class _SmartPostsScreenState extends State<SmartPostsScreen> {
   late final PageController _pageController;
+  int _activePageIndex = AppConstants.defaultPostIndex;
 
   @override
   void initState() {
     super.initState();
-    _pageController = PageController();
+    _pageController = PageController(
+      initialPage: AppConstants.defaultPostIndex,
+    );
   }
 
   @override
@@ -39,33 +43,9 @@ class _SmartPostsScreenState extends State<SmartPostsScreen> {
     super.dispose();
   }
 
-  Widget _carouselItem({required int index, required Widget child}) {
-    return AnimatedBuilder(
-      animation: _pageController,
-      child: child,
-      builder: (context, child) {
-        final currentPage =
-            _pageController.hasClients &&
-                _pageController.position.hasContentDimensions
-            ? _pageController.page ?? index.toDouble()
-            : AppConstants.defaultPostIndex.toDouble();
-        final distance = (currentPage - index).abs().clamp(
-          AppConstants.zero,
-          AppConstants.one,
-        );
-        final scale =
-            (AppConstants.one - (distance * AppConstants.carouselScaleRange))
-                .clamp(AppConstants.carouselMinimumScale, AppConstants.one);
-        final opacity =
-            (AppConstants.one - (distance * AppConstants.carouselOpacityRange))
-                .clamp(AppConstants.carouselMinimumOpacity, AppConstants.one);
-
-        return Opacity(
-          opacity: opacity,
-          child: Transform.scale(scale: scale, child: child),
-        );
-      },
-    );
+  void _onPageChanged(int index) {
+    setState(() => _activePageIndex = index);
+    context.read<SmartPostsBloc>().add(SmartPostChanged(index));
   }
 
   @override
@@ -137,13 +117,13 @@ class _SmartPostsScreenState extends State<SmartPostsScreen> {
                             PageView.builder(
                               controller: _pageController,
                               scrollDirection: Axis.vertical,
+                              pageSnapping: true,
+                              allowImplicitScrolling: true,
                               physics: AppConstants.pageScrollPhysics,
                               itemCount: state.posts.length,
-                              onPageChanged: (index) => context
-                                  .read<SmartPostsBloc>()
-                                  .add(SmartPostChanged(index)),
+                              onPageChanged: _onPageChanged,
                               itemBuilder: (context, index) {
-                                final postPage = SmartPostPage(
+                                return SmartPostPage(
                                   post: state.posts[index],
                                   postIndex: index,
                                   postCount: state.posts.length,
@@ -160,11 +140,20 @@ class _SmartPostsScreenState extends State<SmartPostsScreen> {
                                     AppStrings.productOpenedMessage,
                                   ),
                                 );
-                                return _carouselItem(
-                                  index: index,
-                                  child: postPage,
-                                );
                               },
+                            ),
+                            Positioned(
+                              right: AppConstants.indicatorRight,
+                              top: AppConstants.zero,
+                              bottom: AppConstants.zero,
+                              child: IgnorePointer(
+                                child: Center(
+                                  child: SmartPostIndicators(
+                                    activeIndex: _activePageIndex,
+                                    count: state.posts.length,
+                                  ),
+                                ),
+                              ),
                             ),
                             Align(
                               alignment: Alignment.bottomCenter,

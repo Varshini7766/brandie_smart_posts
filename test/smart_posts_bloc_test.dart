@@ -33,10 +33,20 @@ void main() {
         ..add(const CaptionSaved());
 
       await bloc.stream.firstWhere(
-        (state) => state.posts.first.caption == updatedCaption,
+        (state) =>
+            state.posts.first.caption.startsWith(updatedCaption) &&
+            !state.captionDirty,
       );
 
-      expect(bloc.state.posts.first.caption, updatedCaption);
+      expect(bloc.state.posts.first.caption, contains(updatedCaption));
+      expect(
+        bloc.state.posts.first.caption,
+        contains('Use my referral code: UK-AMANDA3012'),
+      );
+      expect(
+        bloc.state.posts.first.caption,
+        contains('Use my referral link: www.oriflame.com/giordani/amada3012'),
+      );
       expect(bloc.state.captionDirty, isFalse);
     });
 

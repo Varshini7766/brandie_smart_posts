@@ -103,11 +103,15 @@ final class SmartPostsBloc extends Bloc<SmartPostsEvent, SmartPostsState> {
     CaptionEditorOpened event,
     Emitter<SmartPostsState> emit,
   ) {
+    // Referral lines are prefilled content and count toward the caption limit.
+    final caption = AppUtils.ensureReferralSuffix(
+      state.posts[event.postIndex].caption,
+    );
     emit(
       state.copyWith(
         editingPostIndex: event.postIndex,
-        draftCaption: state.posts[event.postIndex].caption,
-        captionDirty: false,
+        draftCaption: caption,
+        captionDirty: caption != state.posts[event.postIndex].caption,
       ),
     );
   }
@@ -134,13 +138,15 @@ final class SmartPostsBloc extends Bloc<SmartPostsEvent, SmartPostsState> {
     final editingIndex = state.editingPostIndex;
     if (editingIndex == null || !state.captionDirty) return;
 
+    final caption = AppUtils.ensureReferralSuffix(state.draftCaption);
     final updatedPosts = List.of(state.posts);
     updatedPosts[editingIndex] = updatedPosts[editingIndex].copyWith(
-      caption: state.draftCaption,
+      caption: caption,
     );
     emit(
       state.copyWith(
         posts: List.unmodifiable(updatedPosts),
+        draftCaption: caption,
         captionDirty: false,
       ),
     );

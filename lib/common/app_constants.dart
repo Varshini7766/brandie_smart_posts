@@ -20,6 +20,7 @@ abstract final class AppConstants {
   static const socialIconSize = 32.0;
   static const socialIconInnerSize = 21.0;
   static const socialIconGap = 12.0;
+  static const quickShareTrailingPadding = 32.0;
   static const storyRingWidth = 1.7;
   static const pageIndicatorSize = 10.0;
   static const pageIndicatorGap = 8.0;
@@ -33,15 +34,13 @@ abstract final class AppConstants {
   static const shareModeIconSize = 16.0;
   static const suggestionProfileSize = 26.0;
   static const captionCardHeight = 126.0;
-  static const captionPreviewLength = 210;
-  static const captionPreviewLines = 4;
+  static const captionPreviewLines = 8;
   static const contentCardGap = 4.0;
   static const contentBottomOffset = 132.0;
   static const shareRowBottomOffset = 83.0;
   static const postCounterTop = 16.0;
   static const postCounterRight = 16.0;
   static const indicatorRight = 16.0;
-  static const indicatorTop = 265.0;
   static const headerIconSize = 40.0;
   static const cameraIconSize = 32.0;
   static const headerLogoWidth = 117.0;
@@ -107,12 +106,9 @@ abstract final class AppConstants {
   static const productRevealDelay = Duration(seconds: 3);
   static const pageAnimationDuration = Duration(milliseconds: 280);
   static const feedbackDuration = Duration(seconds: 2);
-  static const carouselMinimumScale = 0.94;
-  static const carouselMinimumOpacity = 0.65;
-  static const carouselScaleRange = 0.06;
-  static const carouselOpacityRange = 0.35;
-
-  static const pageScrollPhysics = PageScrollPhysics();
+  static const pageScrollPhysics = PageScrollPhysics(
+    parent: ClampingScrollPhysics(),
+  );
   static const navigationIcons = <IconData>[
     Icons.local_offer_outlined,
     Icons.search,
@@ -146,6 +142,13 @@ abstract final class AppTextStyles {
     height: 1,
     leadingDistribution: TextLeadingDistribution.even,
     fontWeight: FontWeight.w700,
+  );
+  static const captionReferral = TextStyle(
+    fontSize: 12,
+    height: 1,
+    leadingDistribution: TextLeadingDistribution.even,
+    fontWeight: FontWeight.w400,
+    fontStyle: FontStyle.italic,
   );
   static const label = TextStyle(
     fontSize: 10,

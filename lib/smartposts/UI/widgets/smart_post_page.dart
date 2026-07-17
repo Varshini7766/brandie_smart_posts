@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import '../../../common/app_colors.dart';
 import '../../../common/app_constants.dart';
 import '../../../common/app_strings.dart';
-import '../../../common/utils.dart';
 import '../../../common_widgets/glass_panel.dart';
 import '../../models/smart_post.dart';
 
@@ -45,11 +44,6 @@ class SmartPostPage extends StatelessWidget {
           right: AppConstants.postCounterRight,
           top: AppConstants.postCounterTop,
           child: _PostCounter(current: postIndex + 1, count: postCount),
-        ),
-        Positioned(
-          right: AppConstants.indicatorRight,
-          top: AppConstants.indicatorTop,
-          child: _PostIndicators(activeIndex: postIndex, count: postCount),
         ),
         Positioned(
           left: AppConstants.horizontalPadding,
@@ -163,33 +157,6 @@ class _PostCounter extends StatelessWidget {
       child: Text(
         '$current ${AppStrings.of} $count',
         style: AppTextStyles.captionMetaBold.copyWith(color: AppColors.white),
-      ),
-    );
-  }
-}
-
-class _PostIndicators extends StatelessWidget {
-  const _PostIndicators({required this.activeIndex, required this.count});
-
-  final int activeIndex;
-  final int count;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: List<Widget>.generate(
-        count,
-        (index) => Container(
-          width: AppConstants.pageIndicatorSize,
-          height: AppConstants.pageIndicatorSize,
-          margin: const EdgeInsets.only(bottom: AppConstants.pageIndicatorGap),
-          decoration: BoxDecoration(
-            color: index == activeIndex
-                ? AppColors.brandGreen
-                : AppColors.white,
-            shape: BoxShape.circle,
-          ),
-        ),
       ),
     );
   }
@@ -368,30 +335,10 @@ class _CaptionCard extends StatelessWidget {
         const SizedBox(height: AppConstants.four),
         GlassPanel(
           color: AppColors.captionOverlay,
-          padding: const EdgeInsets.all(AppConstants.twelve),
-          child: Text.rich(
-            TextSpan(
-              children: <InlineSpan>[
-                TextSpan(text: AppUtils.captionPreview(post.caption)),
-                const TextSpan(text: AppStrings.ellipsis),
-                WidgetSpan(
-                  alignment: PlaceholderAlignment.baseline,
-                  baseline: TextBaseline.alphabetic,
-                  child: GestureDetector(
-                    onTap: onEdit,
-                    child: Text(
-                      AppStrings.seeMore,
-                      style: AppTextStyles.body.copyWith(
-                        color: AppColors.white,
-                        fontWeight: FontWeight.w400,
-                        decoration: TextDecoration.underline,
-                        decorationColor: AppColors.white,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
+          padding: const EdgeInsets.all(AppConstants.eight),
+          onTap: onEdit,
+          child: Text(
+            post.caption,
             strutStyle: AppTextStruts.caption,
             maxLines: AppConstants.captionPreviewLines,
             overflow: TextOverflow.ellipsis,
@@ -425,6 +372,9 @@ class _QuickShareRow extends StatelessWidget {
           Expanded(
             child: ListView.separated(
               scrollDirection: Axis.horizontal,
+              padding: const EdgeInsets.only(
+                right: AppConstants.quickShareTrailingPadding,
+              ),
               itemCount: SmartPostFixtures.sharePlatforms.length,
               separatorBuilder: (_, _) =>
                   const SizedBox(width: AppConstants.socialIconGap),
