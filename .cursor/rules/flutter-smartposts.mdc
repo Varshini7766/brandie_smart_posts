@@ -1,0 +1,21 @@
+---
+description: Brandie Smart Posts Flutter architecture and implementation rules
+alwaysApply: true
+---
+
+# Smart Posts Project Rules
+
+- Keep feature code in `lib/smartposts/` with `UI/`, `bloc/`, and `models/`.
+- Keep shared strings, colors, dimensions, durations, and asset paths outside the feature in `lib/common/`.
+- Put reusable, feature-independent widgets in `lib/common_widgets/`.
+- Never hardcode user-facing strings, colors, asset paths, or design dimensions in UI files.
+- Use local assets only. Do not depend on remote images or backend/API calls.
+- Use Flutter Bloc with separate `*_bloc.dart`, `*_event.dart`, and `*_state.dart` files.
+- Register handlers with `on<Event>` and update state only with `emit`.
+- Keep business state, timers, and transitions out of widgets.
+- Use immutable models and states with `Equatable`.
+- Add comments only for business logic, non-obvious interaction decisions, and important constraints.
+- Follow SOLID principles where they improve separation, testability, and reuse; avoid unnecessary abstraction.
+- Match the supplied Figma design at its 375x812 reference size, while preventing overflow on nearby mobile sizes.
+- Reuse exported Figma assets exactly and verify image crop, spacing, typography, opacity, and layering.
+- Run formatting, `flutter analyze`, and `flutter test` after substantive changes.
